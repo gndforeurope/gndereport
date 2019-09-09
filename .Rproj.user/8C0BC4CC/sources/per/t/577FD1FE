@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1568057838660.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2776703616",
+    "id" : "577FD1FE",
+    "lastKnownWriteTime" : 1567600119,
+    "last_content_update" : 1567600119,
+    "path" : "~/sci/code/R/pkg/gndereport/R/utils-pipe.R",
+    "project_path" : "R/utils-pipe.R",
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

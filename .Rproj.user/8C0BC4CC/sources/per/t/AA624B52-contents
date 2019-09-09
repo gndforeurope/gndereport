@@ -1,0 +1,30 @@
+Package: gndereport
+Type: Package
+Title: Analysis of the public consultation feedback on the policy report
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Ramiro", family = "Magno", email = "ramiro.magno@gmail.com",
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0001-5226-3441")),
+    person("Green New Deal for Europe", role = c("cph"))
+    )
+Description: This package tidies and runs summary statistics on
+    users' feedback of the policy report: report.gndforeurope.com.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    data.table,
+    fs,
+    lubridate,
+    readr,
+    rlang,
+    stringr,
+    tibble,
+    dplyr,
+    magrittr,
+    DT
+RoxygenNote: 6.1.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

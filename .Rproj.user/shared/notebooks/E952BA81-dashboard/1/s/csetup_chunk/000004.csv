@@ -1,0 +1,32 @@
+"0","library(gndereport)"
+"0","library(ggplot2)"
+"2","Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+"
+"2","Registered S3 method overwritten by 'dplyr':
+  method           from
+  print.rowwise_df     
+"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","feedback <- read_feedback('~/dwl/gnd_feedback/Feedback/') %>% tidy_feedback()"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"

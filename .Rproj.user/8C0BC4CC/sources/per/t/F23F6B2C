@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1568057834160.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2646042043",
+    "id" : "F23F6B2C",
+    "lastKnownWriteTime" : 1567600434,
+    "last_content_update" : 1567600434,
+    "path" : "~/sci/code/R/pkg/gndereport/R/read.R",
+    "project_path" : "R/read.R",
+    "properties" : {
+        "cursorPosition" : "0,10",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

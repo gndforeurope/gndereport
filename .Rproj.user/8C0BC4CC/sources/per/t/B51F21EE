@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1567613277235.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3423334548",
+    "id" : "B51F21EE",
+    "lastKnownWriteTime" : 1568038765,
+    "last_content_update" : 1568038765089,
+    "path" : "~/sci/code/R/pkg/gndereport/vignettes/dashboard.Rmd",
+    "project_path" : "vignettes/dashboard.Rmd",
+    "properties" : {
+        "cursorPosition" : "9,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

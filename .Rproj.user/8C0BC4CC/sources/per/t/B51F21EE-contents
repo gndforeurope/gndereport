@@ -1,0 +1,393 @@
+---
+title: "Feedback on the policy report"
+output: 
+  flexdashboard::flex_dashboard:
+    mathjax: null
+    logo: ../man/figures/logo.png
+    favicon: ../man/figures/favicon.png
+    css: gnde.css
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(knitr)
+library(kableExtra)
+library(DT)
+library(highcharter)
+```
+
+```{r setup, echo=FALSE}
+library(gndereport)
+library(ggplot2)
+library(dplyr)
+feedback <- read_feedback('~/sci/datasets/gnde_policy_report_feedback/Feedback/') %>% tidy_feedback()
+```
+
+```{r data}
+names_tally <- feedback %>%
+  dplyr::count(name) %>%
+  dplyr::arrange(desc(n))
+
+countries_tally <- feedback %>%
+  dplyr::count(country) %>%
+  dplyr::arrange(desc(n))
+
+organizations_tally <- feedback %>%
+  dplyr::count(organization) %>%
+  dplyr::arrange(desc(n))
+
+countries_people_tally <-
+  feedback %>%
+  dplyr::group_by(email) %>%
+  dplyr::summarise(country = dplyr::first(country), name = dplyr::first(name)) %>%
+  dplyr::count(country) %>%
+  dplyr::arrange(desc(n))
+  
+```
+
+
+# About
+
+### Summary
+
+#### Totals
+
+- Comments: `r nrow(feedback)`
+- Participants: `r nrow(names_tally)`
+- Countries: `r nrow(countries_tally)`
+- Organizations (excluding single individuals): `r nrow(organizations_tally) - 1`
+
+#### Database period
+
+- Date of first comment: `r min(feedback$date)`
+- Date of last comment: `r max(feedback$date)`
+
+#### Dashboard update
+
+- Last update of this dashboard: `r lubridate::now()` WEST
+
+# Participants
+
+Column {data-width=150}
+-------------------------------------
+    
+### Number of comments by person
+
+    
+```{r}
+names_tally %>%
+  dplyr::rename(Name = name, n = n) %>%
+  my_datatable(caption = 'Table 1: Comments per person.')
+```
+   
+Column
+-------------------------------------
+   
+### Participants across the globe
+
+```{r}
+hcmap("custom/world-eckert3-highres", data = countries_people_tally, value = "n",
+      joinBy = c("name", "country"), name = 'People',
+      dataLabels = list(enabled = TRUE, format = '{point.name}'),
+      borderColor = "#9A9A9A", borderWidth = 0.3,
+      tooltip = list(valueDecimals = 0)) %>%
+  hc_mapNavigation(enabled = TRUE) %>%
+  hc_credits(enabled = FALSE) %>%
+  hc_colorAxis(minColor = "#FFFFFF", maxColor = "#55BF35") %>%
+  hc_legend(enabled = FALSE) %>%
+  hc_exporting(enabled = TRUE)
+```  
+
+# Countries
+
+Column {data-width=150}
+-------------------------------------
+    
+### Number of comments by country
+
+
+```{r}
+countries_tally %>%
+  dplyr::rename(Country = country, n = n) %>%
+  my_datatable(caption = 'Table 2: Comments by country.')
+```
+   
+Column
+-------------------------------------
+   
+### Comments across the globe
+
+```{r}
+hcmap("custom/world-eckert3-highres", data = countries_tally, value = "n",
+      joinBy = c("name", "country"), name = 'Comments',
+      dataLabels = list(enabled = TRUE, format = '{point.name}'),
+      borderColor = "#9A9A9A", borderWidth = 0.3,
+      tooltip = list(valueDecimals = 0)) %>%
+  hc_mapNavigation(enabled = TRUE) %>%
+  hc_credits(enabled = FALSE) %>%
+  hc_colorAxis(minColor = "#FFFFFF", maxColor = "#55BF35") %>%
+  hc_legend(enabled = FALSE) %>%
+  hc_exporting(enabled = TRUE)
+```
+
+# Organizations
+
+Column {data-width=150}
+-------------------------------------
+    
+### Number of comments by organization
+    
+```{r}
+organizations_tally %>%
+  dplyr::rename(Organization = organization, n = n) %>%
+  my_datatable(caption = 'Table 3: Comments by organization.')
+```
+   
+Column
+-------------------------------------
+   
+### Comments by organization and type
+
+```{r}
+comments_section_tally <-
+  feedback %>% count(organization, choice) %>%
+  arrange(desc(n))
+```
+
+```{r}
+hchart(comments_section_tally, "bar",
+       hcaes(x = organization, y = n, group = choice)) %>%
+  hc_xAxis(title = list(text = ""))
+```   
+
+# Comments by section and type
+
+Column {data-width=150}
+-------------------------------------
+
+### Comments by section and type
+
+```{r}
+comments_section_tally <-
+  feedback %>% count(chapter, choice)
+```
+
+```{r}
+comments_section_tally %>%
+  dplyr::rename(Section = chapter, Type = choice, n = n) %>%
+  my_datatable(caption = 'Table 4: Comments by section and type.')
+```
+
+Column
+-------------------------------------
+
+### Comments by section and type
+
+```{r}
+hchart(comments_section_tally,
+       "column",
+       hcaes(x = chapter, y = n, group = choice)
+       ) %>%
+  hc_xAxis(title = list(text = "Section")) %>%
+  hc_yAxis(title = "")
+```
+
+
+# Comments' text by section
+   
+Column {.tabset .tabset-fade}
+-------------------------------------
+
+```{r include=FALSE}
+table_of_comments <- function(section) {
+  filter(feedback, chapter == section) %>%
+    rename(Date = date,
+           Section = chapter,
+           Name = name,
+           Email = email,
+           Organization = organization,
+           Country = country,
+           `Type of comment` = choice,
+           `Text of the comment` = text) %>%
+    my_datatable(searching = TRUE)
+}
+```
+
+   
+### 2.1
+
+```{r}
+table_of_comments('2.1')
+```   
+
+### 2.2.2
+
+```{r}
+table_of_comments('2.2.2')
+``` 
+
+### 2.2.3
+
+```{r}
+table_of_comments('2.2.3')
+``` 
+
+### 2.2.4
+
+```{r}
+table_of_comments('2.2.4')
+``` 
+
+### 2.3.1
+
+```{r}
+table_of_comments('2.3.1')
+``` 
+
+### 2.3.2a
+
+```{r}
+table_of_comments('2.3.2.a')
+``` 
+
+### 2.3.2b
+
+```{r}
+table_of_comments('2.3.2.b')
+``` 
+
+### 2.4.1
+
+```{r}
+table_of_comments('2.4.1')
+``` 
+
+### 2.4.2a
+
+```{r}
+table_of_comments('2.4.2.a')
+``` 
+
+### 2.4.2b
+
+```{r}
+table_of_comments('2.4.2.b')
+``` 
+
+### 2.4.2c
+
+```{r}
+table_of_comments('2.4.2.c')
+``` 
+
+### 2.4.3
+
+```{r}
+table_of_comments('2.4.3')
+``` 
+
+### 2.4.4
+
+```{r}
+table_of_comments('2.4.4')
+``` 
+
+### 2.4.5
+
+```{r}
+table_of_comments('2.4.5')
+``` 
+
+### 2.4.6c
+
+```{r}
+table_of_comments('2.4.6.c')
+``` 
+
+### 2.4.7
+
+```{r}
+table_of_comments('2.4.7')
+``` 
+
+### 3.2.1
+
+```{r}
+table_of_comments('3.2.1')
+``` 
+
+### 3.2.2
+
+```{r}
+table_of_comments('3.2.2')
+``` 
+
+### 3.3.1
+
+```{r}
+table_of_comments('3.3.1')
+``` 
+
+### 3.2.2
+
+```{r}
+table_of_comments('3.2.2')
+``` 
+
+### 3.3.1
+
+```{r}
+table_of_comments('3.3.1')
+``` 
+
+### 3.3.2
+
+```{r}
+table_of_comments('3.3.2')
+``` 
+
+### 3.3.3
+
+```{r}
+table_of_comments('3.3.3')
+``` 
+
+### 3.3.4
+
+```{r}
+table_of_comments('3.3.4')
+``` 
+
+### 3.4.1
+
+```{r}
+table_of_comments('3.4.1')
+``` 
+
+### 3.4.2
+
+```{r}
+table_of_comments('3.4.2')
+``` 
+
+### 3.4.3
+
+```{r}
+table_of_comments('3.4.3')
+``` 
+
+### 3.4.4
+
+```{r}
+table_of_comments('3.4.4')
+``` 
+
+### 4.1
+
+```{r}
+table_of_comments('4.1')
+``` 
+
